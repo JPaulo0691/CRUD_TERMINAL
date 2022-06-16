@@ -49,7 +49,7 @@ public class Program {
 		
 		do {
 			
-			System.out.println("Digite S para continuar");
+			System.out.println("Digite S para entrar no sistema de estacionamento");
 			System.out.println("Digite N para encerrar");
 			
 			System.out.println("Escolha uma das opções: ");
@@ -81,20 +81,21 @@ public class Program {
 				break;
 				
 				case 2:
-					System.out.println("Qual marca você procura: ");
+					System.out.println("Digite o id do carro que você procura: ");
 					Integer findId = Integer.parseInt(input.nextLine());
 					
-					for(Carro buscarId : listaCarros) {
+					Integer buscarID = findById(listaCarros, findId);
+					
+					if(buscarID == null) {
+						System.out.println("Id Inexistente!");
+					}
+					else {
 						
-						if(findId == buscarId.getId()) {
-							System.out.println(buscarId);
-							break;
+						for(int i = 0; i < listaCarros.size(); i++) {
+							System.out.println(listaCarros.get(buscarID));// consulta por ID
 						}
-						else {
-							System.out.println("Id não encontrado");
-							break;
-						}						
-					}				
+					}
+							
 				break;
 											
 				case 3:
@@ -104,7 +105,7 @@ public class Program {
 							+ "\nDigite o Id anterior:");
 					int atualId = Integer.parseInt(input.nextLine());
 					
-					Integer updateById =  findById(listaCarros, atualId);
+					Integer updateById =  findById(listaCarros, atualId); 
 					
 					if(updateById == null) {
 						System.out.println("Id não encontrado!");
@@ -131,19 +132,17 @@ public class Program {
 					System.out.println("Digite o Id do Veículo que você deseja deletar");
 					int deletID = Integer.parseInt(input.nextLine());
 					
-					Integer delById = findById(listaCarros, deletID);
+					//Deletando Usuário
+					Carro searchID = listaCarros.stream().filter(x -> x.getId() == deletID).findFirst().orElse(null);
 					
-					if(delById == null) {
-						System.out.println("Id não encontrado");
-						break;
+					if(searchID == null) {
+						System.out.println("Id inexistente");
 					}
-					else {			
-												
-																		
-						System.out.println("Deletado com Sucesso");
-						break;
-						
+					else {
+						listaCarros.remove(searchID);
+						System.out.println("Usuário Excluído");
 					}
+					break;
 					
 				default:
 					System.out.println("Código de Filtro Inválido");
@@ -172,15 +171,4 @@ public class Program {
 		return null;
 	}
 	
-	public static void deleteById(List<Carro> list, int id) {
-		for(int i = 0; i < list.size(); i++) {
-			
-			if(list.get(i).getId() == id) {
-				list.remove(i);					
-			}			
-		}
-	}
-	
-	
-
 }
